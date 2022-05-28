@@ -1,20 +1,20 @@
 .home__jumbotron {
   width: 90%;
   margin: 75px auto;
-  padding-top: 85px;
+  padding-top: 16px;
   background-color: rgb(203 211 255);
-  padding-bottom: 85px;
-  padding-left: 65px;
-  padding-right: 65px;
+  padding-bottom: 16px;
+  padding-left: 16px;
+  padding-right: 16px;
   border-radius: 8px;
   position: relative;
   overflow: hidden;
 }
 .home__jumbotron h2 {
-  font-size: 3rem;
+  font-size: 32px;
   font-weight: 600;
   margin-bottom: 0;
-  line-height: 72px;
+  line-height: 44px;
 }
 
 .cirlce_first {
@@ -52,7 +52,23 @@
   margin: 0 auto;
   padding-top: 65px;
   padding-bottom: 65px;
-  display: grid;
+  display: block;
   grid-gap: 50px;
   grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+}
+
+@media screen and (min-width: 565px) {
+  .shops__container {
+    display: grid;
+  }
+  .home__jumbotron {
+    padding-top: 65px;
+    padding-bottom: 65px;
+    padding-left: 35px;
+    padding-right: 35px;
+  }
+  .home__jumbotron h2 {
+    font-size: 4vw;
+    line-height: 72px;
+  }
 }
