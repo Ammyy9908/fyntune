@@ -26,8 +26,19 @@ function NewShop({ insertCamp, user }) {
     }
   }, [user]);
   const handleCampAdd = (e) => {
+    let alpha_reg = /^[A-Za-z\s]*$/;
     e.preventDefault();
     if (name && description && opening && closing && area && category) {
+      // check is name of the shop only have alphabets
+      if (!alpha_reg.test(name)) {
+        alert("make sure shop name have only alphabets");
+        return;
+      }
+      // check is opening time is less than and not equal to closing time
+      if (new Date(opening) >= new Date(closing)) {
+        alert("make sure opening time is less than closing time");
+        return;
+      }
       addShop(
         name,
         area,

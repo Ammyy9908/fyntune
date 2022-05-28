@@ -4,7 +4,10 @@ import ShopCard from "../components/ShopCard/ShopCard";
 import BlankCard from "../components/BlankCard/BlankCard";
 import "./Home.css";
 import { connect } from "react-redux";
+import axios from "axios";
 function Home({ shops }) {
+  const [search, setSearch] = React.useState(null);
+  const [query, setQuery] = React.useState("");
   const handleMouseMove = (e) => {
     const x = e.clientX;
     const y = e.clientY;
@@ -14,6 +17,23 @@ function Home({ shops }) {
     document.querySelector(".cirlce_first").style.top = `${y}px`;
     document.querySelector(".cirlce_second").style.top = `${y}px`;
     document.querySelector(".cirlce_second").style.left = `${x / 2}px`;
+  };
+
+  const handleSearch = () => {
+    axios
+      .get(`https://fyntune.herokuapp.com/api/shop/search?q=${query}`)
+      .then((res) => {
+        console.log(res.data);
+        setSearch(res.data.shops);
+        setQuery("");
+      })
+      .catch((e) => console.log(e));
+  };
+
+  console.log(search);
+
+  const handleReset = (e) => {
+    setSearch(null);
   };
   return (
     <div>
@@ -36,10 +56,17 @@ function Home({ shops }) {
                 id="key"
                 className="w-full h-half"
                 placeholder="Search for shops"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
               />
             </div>
-            <button className="search_btn py-3 px-5 bg-brand-300 hover:bg-indigo-400 rounded text-white font-bold">
-              Search
+            <button
+              className={`search_btn py-3 px-5 bg-brand-300 hover:bg-indigo-400 rounded text-white font-bold ${
+                search && "clear_btn"
+              }`}
+              onClick={search ? handleReset : handleSearch}
+            >
+              {search ? "Clear Search" : "Search"}
             </button>
           </div>
           <a href="/new" className="font-bold">
@@ -50,7 +77,23 @@ function Home({ shops }) {
 
       <div className="shops__container">
         <>
-          {!shops ? (
+          {search &&
+            search.length > 0 &&
+            search.map((shop, i) => {
+              return (
+                <ShopCard
+                  id={shop._id}
+                  thumb={shop.thumbnail.url}
+                  key={i}
+                  file_id={shop.thumbnail.public_id}
+                  category={shop.category}
+                  name={shop.name}
+                  area={shop.shop_area}
+                  created_by={shop.created_by}
+                />
+              );
+            })}
+          {!shops && (
             <>
               <BlankCard />
               <BlankCard />
@@ -65,9 +108,11 @@ function Home({ shops }) {
               <BlankCard />
               <BlankCard />
             </>
-          ) : (
-            <>
-              {shops.map((shop, i) => {
+          )}
+          <>
+            {!search &&
+              shops &&
+              shops.map((shop, i) => {
                 console.log(shop);
                 return (
                   <ShopCard
@@ -82,8 +127,7 @@ function Home({ shops }) {
                   />
                 );
               })}
-            </>
-          )}
+          </>
         </>
       </div>
     </div>

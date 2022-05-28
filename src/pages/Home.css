@@ -37,6 +37,10 @@
   background-color: rgba(29, 255, 168, 0.484);
 }
 
+.clear_btn {
+  background-color: red;
+}
+
 .search_input {
   width: 330px;
   padding-top: 12px;
